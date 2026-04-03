@@ -5,8 +5,8 @@ export default function App() {
   const [bill, setBill] = useState('');
   const [satisfaction, setSatisfaction] = useState(0);
   const [satisfactionSecond, setSatisfactionSecond] = useState(0);
-  const tipsPercetage = (satisfaction + satisfactionSecond) / 2;
-  const tipAmount = ((bill || 0) * tipsPercetage) / 100;
+  const tipsPercetns = Number(satisfaction) + Number(satisfactionSecond);
+  const tipAmount = (Number(bill) * tipsPercetns) / 100;
   console.log(tipAmount);
   // console.log(Number(satisfaction));
   // console.log(Number(satisfactionSecond));
@@ -16,19 +16,19 @@ export default function App() {
       <BillInput bill={bill} setBill={setBill} />
       <SelectPercentage
         text='How did you like the service?'
-        value={Number(satisfaction)}
-        onSetValue={setSatisfaction}
+        satisfaction={Number(satisfaction)}
+        setSatisfaction={setSatisfaction}
       />
-      <SelectPercentage
+      <SelectPercentageSecond
         text='How did your friend like the service?'
-        value={satisfactionSecond}
-        onSetValue={setSatisfactionSecond}
+        satisfactionSecond={satisfactionSecond}
+        setSatisfactionSecond={setSatisfactionSecond}
       />
       <Output bill={bill} tipAmount={tipAmount} />
       <Reset
         setBill={setBill}
-        onReset1={setSatisfaction}
-        onReset2={setSatisfactionSecond}
+        setSatisfaction={setSatisfaction}
+        setSatisfactionSecond={setSatisfactionSecond}
       />
     </div>
   );
@@ -47,13 +47,33 @@ function BillInput({ bill, setBill }) {
   );
 }
 
-function SelectPercentage({ text, value, onSetValue }) {
+function SelectPercentage({ text, satisfaction, setSatisfaction }) {
   return (
     <div>
       <p>{text}</p>
       <select
-        value={value}
-        onChange={(e) => onSetValue(Number(e.target.value))}
+        value={satisfaction}
+        onChange={(e) => setSatisfaction(e.target.value)}
+      >
+        <option value='0'>Dissatisfied (0%)</option>
+        <option value='5'>It was ok (5%)</option>
+        <option value='10'>It was good (10%)</option>
+        <option value='20'>Absolutely amazing! (20%)</option>
+      </select>
+    </div>
+  );
+}
+function SelectPercentageSecond({
+  text,
+  satisfactionSecond,
+  setSatisfactionSecond,
+}) {
+  return (
+    <div>
+      <p>{text}</p>
+      <select
+        value={satisfactionSecond}
+        onChange={(e) => setSatisfactionSecond(e.target.value)}
       >
         <option value='0'>Dissatisfied (0%)</option>
         <option value='5'>It was ok (5%)</option>
@@ -70,13 +90,13 @@ function Output({ bill, tipAmount }) {
   // return <h1>{`You pay $${sum} ($${bill} + $${tip})`}</h1>;
 }
 
-function Reset({ setBill, onReset1, onReset2 }) {
+function Reset({ setBill, setSatisfaction, setSatisfactionSecond }) {
   return (
     <button
       onClick={() => {
         setBill(0);
-        onReset1(0);
-        onReset2(0);
+        setSatisfaction(0);
+        setSatisfactionSecond(0);
       }}
     >
       Reset
