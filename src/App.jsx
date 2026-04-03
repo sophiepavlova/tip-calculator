@@ -2,6 +2,10 @@ import { useState } from 'react';
 import './App.css';
 
 export default function App() {
+  return <TipCalculator />;
+}
+
+function TipCalculator() {
   const [bill, setBill] = useState('');
   const [satisfaction, setSatisfaction] = useState(0);
   const [satisfactionSecond, setSatisfactionSecond] = useState(0);
